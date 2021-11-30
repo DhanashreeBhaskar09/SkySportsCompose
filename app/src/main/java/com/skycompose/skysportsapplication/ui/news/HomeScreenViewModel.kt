@@ -1,7 +1,6 @@
 package com.skycompose.skysportsapplication.ui.news
 
 import android.content.Context
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
@@ -14,6 +13,7 @@ import java.io.IOException
 import com.skycompose.skysportsapplication.model.*
 import com.skycompose.skysportsapplication.utils.SkyErrorMessage
 import com.google.gson.Gson
+import kotlinx.coroutines.Dispatchers
 
 data class HomeUiState(
     val stories: List<Story> = emptyList(),
@@ -30,7 +30,8 @@ class HomeScreenViewModel(
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(HomeUiState(loading = true))
     val uiState: StateFlow<HomeUiState> = _uiState.asStateFlow()
-    val applicationContext = context
+    private val applicationContext = context
+
     init {
         fetchNewsData()
     }
@@ -38,21 +39,36 @@ class HomeScreenViewModel(
     fun fetchNewsData() {
         _uiState.update { it.copy(loading = true) }
 
-        Log.d("msg","TEST TEST fetchNewsData");
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             val finalList = mutableListOf<Story>()
             val storyList = mutableListOf<Story>()
             _uiState.update {
                 fetchJsonData().modules.iterator().forEach { news ->
                     news.data.items.forEach { story ->
-                        storyList.add(Story(id = story.id, type = story.type, headline = story.headline))
+                        val url =
+                            "https://e0.365dm.com/" + story.media[0].links.fileReference.replace(
+                                "{width}",
+                                "768"
+                            ).replace("{height}", "432")
+
+                        storyList.add(
+                            Story(
+                                id = story.id,
+                                type = story.type,
+                                headline = story.headline,
+                                media = story.media,
+                                imageUrl = if (url.isNotBlank())
+                                    url
+                                else
+                                    null
+                            )
+                        )
                     }
                 }
                 finalList.add(storyList[0])
                 finalList.addAll(1, storyList.subList(1, storyList.size).shuffled())
                 it.copy(stories = finalList, loading = false)
             }
-            Log.d("msg","TEST TEST finalList-${finalList.size}");
         }
     }
 
@@ -66,7 +82,8 @@ class HomeScreenViewModel(
     private fun fetchJsonData(): NewsModule {
         lateinit var jsonString: String
         try {
-            jsonString = applicationContext.assets.open("top-stories.json").bufferedReader().use { it.readText() }
+            jsonString = applicationContext.assets.open("top-stories.json").bufferedReader()
+                .use { it.readText() }
         } catch (ioException: IOException) {
             errorShown(404L)
             ioException.printStackTrace()

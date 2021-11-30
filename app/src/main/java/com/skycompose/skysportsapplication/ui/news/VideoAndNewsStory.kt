@@ -13,31 +13,43 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import coil.compose.rememberImagePainter
 import com.skycompose.skysportsapplication.R
 import com.skycompose.skysportsapplication.model.Story
+import com.skycompose.skysportsapplication.model.heroStory
+import com.skycompose.skysportsapplication.model.newsStory
 
 @Composable
 fun RenderStory(story: Story) {
-    if (story.type.description == "Video") {
+    if (story.imageUrl != null) {
         Card(
             elevation = 4.dp,
             shape = RoundedCornerShape(8.dp),
-            modifier = Modifier.height(100.dp).padding(start = 8.dp, top = 2.dp, end = 8.dp, bottom = 2.dp)) {
-            Row(modifier = Modifier.background(Color.LightGray))  {
+            modifier = Modifier.height(100.dp)
+        ) {
+            Row(modifier = Modifier.background(Color.LightGray)) {
                 Card(
                     elevation = 4.dp,
                     shape = RoundedCornerShape(8.dp),
-                    modifier = Modifier.width(110.dp).padding(8.dp).background(Color.Transparent)) {
+                    modifier = Modifier.width(110.dp)
+                ) {
                     Image(
+                        //painter = rememberImagePainter(story.imageUrl),
                         painterResource(id = R.drawable.placeholder),
                         contentDescription = "Video image",
                         contentScale = ContentScale.FillBounds,
-                        modifier = Modifier.fillMaxSize())
+                        modifier = Modifier.fillMaxSize()
+                    )
                 }
-                Box(modifier = Modifier.fillMaxSize().padding(4.dp)) {
+                Box(modifier = Modifier.fillMaxSize()) {
                     Text(
-                        modifier = Modifier.align(Alignment.TopStart).fillMaxWidth(),
+                        modifier = Modifier
+                            .align(Alignment.TopStart)
+                            .fillMaxWidth()
+                            .fillMaxHeight()
+                            .background(Color.LightGray),
                         text = story.headline.mobile,
                         style = MaterialTheme.typography.h6,
                         maxLines = 3,
@@ -49,11 +61,20 @@ fun RenderStory(story: Story) {
         Card(
             elevation = 4.dp,
             shape = RoundedCornerShape(8.dp),
-            modifier = Modifier.height(90.dp).padding(start = 8.dp, top = 2.dp, end = 8.dp, bottom = 2.dp)) {
+            modifier = Modifier
+                .height(90.dp)
+        ) {
             Column(modifier = Modifier.background(Color.LightGray)) {
-                Box(modifier = Modifier.fillMaxSize().padding(8.dp)) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                ) {
                     Text(
-                        modifier = Modifier.align(Alignment.TopStart).fillMaxWidth(),
+                        modifier = Modifier
+                            .align(Alignment.TopStart)
+                            .fillMaxWidth()
+                            .fillMaxHeight()
+                            .background(Color.LightGray),
                         text = story.headline.mobile,
                         style = MaterialTheme.typography.h6,
                         maxLines = 3,
@@ -62,5 +83,13 @@ fun RenderStory(story: Story) {
             }
         }
     }
+}
+
+
+@Preview
+@Composable
+fun PreviewStory() {
+    //RenderStory(story = heroStory)
+    RenderStory(story = newsStory)
 }
 

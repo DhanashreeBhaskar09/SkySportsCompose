@@ -1,7 +1,6 @@
 package com.skycompose.skysportsapplication.ui.news
 
 import androidx.compose.foundation.layout.*
-import com.skycompose.skysportsapplication.R
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -11,17 +10,14 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import com.google.accompanist.insets.LocalWindowInsets
-import com.google.accompanist.insets.rememberInsetsPaddingValues
 import com.google.accompanist.insets.systemBarsPadding
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import com.skycompose.skysportsapplication.model.Story
+import com.skycompose.skysportsapplication.ui.components.AppTopBar
 import com.skycompose.skysportsapplication.utils.supportWideScreen
-import java.util.*
-
 
 @Composable
 fun HomeScreen(
@@ -32,7 +28,8 @@ fun HomeScreen(
     HomeScreen(
         uiState = uiState,
         onRefreshPosts = { homeViewModel.fetchNewsData() },
-        scaffoldState = scaffoldState)
+        scaffoldState = scaffoldState
+    )
 }
 
 @OptIn(ExperimentalMaterialApi::class)
@@ -42,6 +39,7 @@ fun HomeScreen(uiState: HomeUiState, onRefreshPosts: () -> Unit, scaffoldState: 
     Scaffold(
         scaffoldState = scaffoldState,
         snackbarHost = { SnackbarHost(hostState = it, modifier = Modifier.systemBarsPadding()) },
+        topBar = { AppTopBar() }
     ) { innerPadding ->
         val modifier = Modifier.padding(innerPadding)
         LoadingContent(
@@ -55,7 +53,8 @@ fun HomeScreen(uiState: HomeUiState, onRefreshPosts: () -> Unit, scaffoldState: 
                     isShowingErrors = uiState.errorMessages.isNotEmpty(),
                     onRefresh = { onRefreshPosts() },
                     modifier = modifier.supportWideScreen(),
-                    scrollState = scrollState)
+                    scrollState = scrollState
+                )
             })
     }
 }
@@ -100,16 +99,12 @@ private fun StoryList(
     modifier: Modifier = Modifier,
     scrollState: LazyListState = rememberLazyListState(),
 ) {
-
     val heroStory = stories[0]
     val story: List<Story> = stories.subList(1, stories.size)
 
     LazyColumn(
-        modifier = modifier,
-        state = scrollState,
-        contentPadding =
-        rememberInsetsPaddingValues(
-            insets = LocalWindowInsets.current.systemBars, applyTop = false)
+        modifier = modifier.padding(horizontal = 8.dp),
+        state = scrollState, verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         item { RenderHeroNewsStory(heroStory) }
         item { RenderVideoAndNewsStory(story) }
@@ -118,19 +113,17 @@ private fun StoryList(
 
 @Composable
 private fun FullScreenLoading() {
-    Box(modifier = Modifier.fillMaxSize().wrapContentSize(Alignment.Center)) {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .wrapContentSize(Alignment.Center)
+    ) {
         CircularProgressIndicator()
     }
 }
 
 @Composable
 private fun RenderHeroNewsStory(story: Story) {
-    Box(modifier = Modifier.fillMaxWidth().height(40.dp).padding(4.dp)) {
-        Text(
-            modifier = Modifier.fillMaxWidth().align(Alignment.TopCenter),
-            text = stringResource(id = R.string.home_top_section_title),
-            style = MaterialTheme.typography.h5)
-    }
     RenderHeroStory(story = story)
 }
 

@@ -44,7 +44,6 @@ val heroStory = Story(
     media = listOf(
         StoryMedia(
             StoryMediaLinks("https://e0.365dm.com/21/06/768x432/skysports-mma-cage_5431086.jpg?20210629101243")
-
         )
     ),
     imageUrl = null

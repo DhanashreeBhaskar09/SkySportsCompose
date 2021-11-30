@@ -16,6 +16,7 @@ private val SkyFontFamily = FontFamily(
             weight = FontWeight.Normal,
             style = FontStyle.Normal
         ),
+
         Font(
             resId = R.font.sky_text_bold,
             weight = FontWeight.Bold,
@@ -25,10 +26,7 @@ private val SkyFontFamily = FontFamily(
 )
 
 val SkyTypography = Typography(
-    h1 = TextStyle(fontFamily = SkyFontFamily, fontSize = 48.sp),
-    h2 = TextStyle(fontFamily = SkyFontFamily, fontSize = 44.sp),
-    h3 = TextStyle(fontFamily = SkyFontFamily, fontSize = 40.sp),
-    h4 = TextStyle(fontFamily = SkyFontFamily, fontSize = 36.sp),
-    h5 = TextStyle(fontFamily = SkyFontFamily, fontSize = 18.sp, fontWeight = FontWeight.Bold),
-    h6 = TextStyle(fontFamily = SkyFontFamily, fontSize = 18.sp)
+    h6 = TextStyle(fontFamily = SkyFontFamily, fontSize = 24.sp, fontWeight = FontWeight.Bold),
+    body1 = TextStyle(fontFamily = SkyFontFamily, fontWeight = FontWeight.Normal, fontSize = 20.sp),
+    body2 = TextStyle(fontFamily = SkyFontFamily, fontWeight = FontWeight.Normal)
 )

@@ -2,13 +2,18 @@ package com.skycompose.skysportsapplication.ui.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -24,41 +29,36 @@ fun AppTopBar() {
     ) {
         Column(
             modifier = Modifier
-                .width(180.dp)
+                .weight(1f)
                 .fillMaxHeight()
-                .background(Color.Blue, shape = RectangleShape)
+                .background(Color.Blue, shape = RectangleShape),
+            horizontalAlignment = Alignment.End,
+            verticalArrangement = Arrangement.Center
         ) {
-            Box(
+            Image(
+                painterResource(id = R.drawable.ic_sky_logo),
+                contentDescription = "Sky",
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .fillMaxHeight()
-            ) {
-                Image(
-                    painterResource(id = R.drawable.ic_sky_logo),
-                    contentDescription = "Sky",
-                    contentScale = ContentScale.FillHeight,
-                    modifier = Modifier.align(Alignment.CenterEnd).padding(end = 2.dp)
-                )
-            }
+                    .height(24.dp)
+                    .padding(end = 2.dp)
+            )
         }
+
         Column(
             modifier = Modifier
-                .width(200.dp)
+                .weight(1f)
                 .fillMaxHeight()
-                .background(Color.Red, shape = RectangleShape)
+                .background(Color.Red, shape = RectangleShape),
+            horizontalAlignment = Alignment.Start,
+            verticalArrangement = Arrangement.Center
         ) {
-            Box(
+            Image(
+                painterResource(id = R.drawable.ic_sports_logo),
+                contentDescription = "Sports logo",
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .fillMaxHeight()
-            ) {
-                Image(
-                    painterResource(id = R.drawable.ic_sports_logo),
-                    contentDescription = "Sports logo",
-                    contentScale = ContentScale.FillHeight,
-                    modifier = Modifier.align(Alignment.CenterStart).padding(start = 2.dp)
-                )
-            }
+                    .height(24.dp)
+                    .padding(start = 2.dp)
+            )
         }
     }
 }

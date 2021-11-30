@@ -1,3 +1,3 @@
-package com.skycompose.skysportsapplication.utils
+package com.skycompose.skysportsapplication.model
 
 data class SkyErrorMessage(val id: Long, val messageId: Int)

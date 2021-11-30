@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.io.IOException
 import com.skycompose.skysportsapplication.model.*
-import com.skycompose.skysportsapplication.utils.SkyErrorMessage
+import com.skycompose.skysportsapplication.model.SkyErrorMessage
 import com.google.gson.Gson
 import kotlinx.coroutines.Dispatchers
 

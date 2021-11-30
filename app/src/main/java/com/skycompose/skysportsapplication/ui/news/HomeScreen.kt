@@ -1,23 +1,32 @@
 package com.skycompose.skysportsapplication.ui.news
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material.*
+import androidx.compose.material.CircularProgressIndicator
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.Scaffold
+import androidx.compose.material.ScaffoldState
+import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import com.google.accompanist.insets.systemBarsPadding
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import com.skycompose.skysportsapplication.model.Story
 import com.skycompose.skysportsapplication.ui.components.AppTopBar
-import com.skycompose.skysportsapplication.utils.supportWideScreen
 
 @Composable
 fun HomeScreen(
@@ -38,21 +47,25 @@ fun HomeScreen(uiState: HomeUiState, onRefreshPosts: () -> Unit, scaffoldState: 
     val scrollState = rememberLazyListState()
     Scaffold(
         scaffoldState = scaffoldState,
-        snackbarHost = { SnackbarHost(hostState = it, modifier = Modifier.systemBarsPadding()) },
         topBar = { AppTopBar() }
     ) { innerPadding ->
-        val modifier = Modifier.padding(innerPadding)
+        val modifier = Modifier
+            .padding(innerPadding)
+
         LoadingContent(
             empty = uiState.initialLoad,
             emptyContent = { FullScreenLoading() },
             loading = uiState.loading,
             onRefresh = onRefreshPosts,
             content = {
-                HomeScreenErrorAndContent(
+                HomeScreen(
                     stories = uiState.stories,
                     isShowingErrors = uiState.errorMessages.isNotEmpty(),
                     onRefresh = { onRefreshPosts() },
-                    modifier = modifier.supportWideScreen(),
+                    modifier = modifier
+                        .fillMaxWidth()
+                        .wrapContentWidth(align = Alignment.CenterHorizontally)
+                        .widthIn(max = 840.dp),
                     scrollState = scrollState
                 )
             })
@@ -79,7 +92,7 @@ private fun LoadingContent(
 }
 
 @Composable
-private fun HomeScreenErrorAndContent(
+private fun HomeScreen(
     stories: List<Story>,
     isShowingErrors: Boolean,
     onRefresh: () -> Unit,
@@ -103,11 +116,17 @@ private fun StoryList(
     val story: List<Story> = stories.subList(1, stories.size)
 
     LazyColumn(
-        modifier = modifier.padding(horizontal = 8.dp),
-        state = scrollState, verticalArrangement = Arrangement.spacedBy(8.dp)
+        modifier = modifier
+            .padding(horizontal = 8.dp)
+            .padding(top = 4.dp),
+        state = scrollState,
+        verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        item { RenderHeroNewsStory(heroStory) }
-        item { RenderVideoAndNewsStory(story) }
+        item { HeroStoryCard(heroStory) }
+
+        items(story) { story ->
+            StoryCard(story = story)
+        }
     }
 }
 
@@ -120,14 +139,4 @@ private fun FullScreenLoading() {
     ) {
         CircularProgressIndicator()
     }
-}
-
-@Composable
-private fun RenderHeroNewsStory(story: Story) {
-    RenderHeroStory(story = story)
-}
-
-@Composable
-private fun RenderVideoAndNewsStory(stories: List<Story>) {
-    Column { stories.forEach { story -> RenderStory(story = story) } }
 }

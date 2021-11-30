@@ -15,5 +15,5 @@ fun SkySportsApplicationTheme(
     content: @Composable() () -> Unit
 ) {
     val colors = LightColorPalette
-    MaterialTheme(colors = colors, /*typography = SkyTypography,*/ shapes = Shapes, content = content)
+    MaterialTheme(colors = colors, typography = SkyTypography, shapes = Shapes, content = content)
 }

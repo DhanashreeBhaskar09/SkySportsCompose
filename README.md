@@ -26,4 +26,3 @@ More on Jetpack compose [here](https://developer.android.com/jetpack/compose)
 
 The data layer is also written using Coroutines, which is a new framework of libraries for writing asynchronous code in a "synchronous" fashion in Kotlin, eliminating the need for the classic callbacks in most cases. 
 More on Kotlin Coroutines from [here](https://kotlinlang.org/docs/coroutines-overview.html) 
-# SkySportsFoldablesCompose
